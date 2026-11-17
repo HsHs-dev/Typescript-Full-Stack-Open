@@ -1,3 +1,5 @@
+import { parseArgs } from "./utils.ts";
+
 type Rating = 1 | 2 | 3;
 
 type RatingMessage =
@@ -5,17 +7,25 @@ type RatingMessage =
   | "not too bad but could be better"
   | "Keep that up champ";
 
-interface Exercise {
+interface ExerciseResult {
   periodLength: number;
   trainingDays: number;
   success: boolean;
-  rating: number;
+  rating: Rating;
   ratingDescription: RatingMessage;
   target: number;
   average: number;
 }
 
-const calculateExercises = (data: Array<number>, target: number): Exercise => {
+interface CmdVals {
+  days: Array<number>;
+  target: number;
+}
+
+const calculateExercises = (
+  data: Array<number>,
+  target: number,
+): ExerciseResult => {
   const average: number =
     data.reduce((a: number, b: number) => a + b, 0) / data.length;
 
@@ -45,6 +55,17 @@ const calculateExercises = (data: Array<number>, target: number): Exercise => {
   };
 };
 
-const testData: Array<number> = [3, 0, 2, 4.5, 0, 3, 1];
+const parseArguments = (args: Array<string>): CmdVals => {
+  const [target, ...days] = parseArgs(args.slice(2));
 
-console.log(calculateExercises(testData, 2));
+  return { target, days };
+};
+
+try {
+  const { target, days } = parseArguments(process.argv);
+  console.log(calculateExercises(days, target));
+} catch (err: unknown) {
+  let errorMessage = "Something went wrong: ";
+  if (err instanceof Error) errorMessage += err.message;
+  console.log(errorMessage);
+}

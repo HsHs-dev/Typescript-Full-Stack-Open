@@ -1,3 +1,5 @@
+import { parseArgs } from "./utils.ts";
+
 type BmiCategory = "Underweight" | "Normal range" | "Overweight";
 
 const calculateBmi = (height: number, weight: number): BmiCategory => {
@@ -12,4 +14,20 @@ const calculateBmi = (height: number, weight: number): BmiCategory => {
   }
 };
 
-console.log(calculateBmi(180, 74));
+const parseArguments = (args: Array<string>) => {
+  if (args.length < 4) throw new Error("Not enough args");
+  if (args.length > 4) throw new Error("Too many args");
+
+  const [height, weight] = parseArgs(args.slice(2));
+
+  return { height, weight };
+};
+
+try {
+  const { height, weight } = parseArguments(process.argv);
+  console.log(calculateBmi(height, weight));
+} catch (err: unknown) {
+  let errorMessage = "Something went wrong: ";
+  if (err instanceof Error) errorMessage += err.message;
+  console.log(errorMessage);
+}
