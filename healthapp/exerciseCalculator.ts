@@ -62,8 +62,10 @@ const parseArguments = (args: Array<string>): CmdVals => {
 };
 
 try {
-  const { target, days } = parseArguments(process.argv);
-  console.log(calculateExercises(days, target));
+  if (process.argv[1] === import.meta.filename) {
+    const { target, days } = parseArguments(process.argv);
+    console.log(calculateExercises(days, target));
+  }
 } catch (err: unknown) {
   let errorMessage = "Something went wrong: ";
   if (err instanceof Error) errorMessage += err.message;

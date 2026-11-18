@@ -23,7 +23,7 @@ app.get("/bmi", (req, res) => {
     !height.trim() ||
     !weight.trim() ||
     !Number.isFinite(h) ||
-    Number.isFinite(w) ||
+    !Number.isFinite(w) ||
     h <= 0 ||
     w <= 0
   ) {
@@ -58,7 +58,7 @@ app.post("/exercises", (req, res) => {
   return res.json(calculateExercises(daily_exercises, target));
 });
 
-const PORT = 3001;
+const PORT = 3000;
 
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
