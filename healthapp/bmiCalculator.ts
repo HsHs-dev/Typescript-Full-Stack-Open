@@ -2,7 +2,7 @@ import { parseArgs } from "./utils.ts";
 
 type BmiCategory = "Underweight" | "Normal range" | "Overweight";
 
-const calculateBmi = (height: number, weight: number): BmiCategory => {
+export const calculateBmi = (height: number, weight: number): BmiCategory => {
   const bmi: number = weight / Math.pow(height / 100, 2);
 
   if (bmi <= 18.5) {
@@ -24,8 +24,10 @@ const parseArguments = (args: Array<string>) => {
 };
 
 try {
-  const { height, weight } = parseArguments(process.argv);
-  console.log(calculateBmi(height, weight));
+  if (process.argv[1] === import.meta.filename) {
+    const { height, weight } = parseArguments(process.argv);
+    console.log(calculateBmi(height, weight));
+  }
 } catch (err: unknown) {
   let errorMessage = "Something went wrong: ";
   if (err instanceof Error) errorMessage += err.message;
