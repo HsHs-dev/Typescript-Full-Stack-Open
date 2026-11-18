@@ -22,7 +22,7 @@ interface CmdVals {
   target: number;
 }
 
-const calculateExercises = (
+export const calculateExercises = (
   data: Array<number>,
   target: number,
 ): ExerciseResult => {
