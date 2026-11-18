@@ -37,6 +37,27 @@ app.get("/bmi", (req, res) => {
   });
 });
 
+app.post("/exercises", (req, res) => {
+  const { daily_exercises, target } = req.body;
+
+  if (!daily_exercises || !target) {
+    return res.status(400).json({ error: "parameters missing" });
+  }
+
+  if (
+    !Array.isArray(daily_exercises) ||
+    !daily_exercises.every((val) => typeof val === "number")
+  ) {
+    return res.status(400).json({ error: "malformatted parameters" });
+  }
+
+  if (typeof target !== "number") {
+    return res.status(400).json({ error: "malformatted parameters" });
+  }
+
+  return res.json(calculateExercises(daily_exercises, target));
+});
+
 const PORT = 3001;
 
 app.listen(PORT, () => {
